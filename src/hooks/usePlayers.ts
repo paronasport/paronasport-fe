@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { generateMockPlayers } from "../mock/fakePlayer";
 import { PlayerService } from "../services/api/players";
 
-const MOCK_COUNT = 50;
+const MOCK_COUNT = 160;
 
 export const usePlayers = () => {
   const isMocking = import.meta.env.VITE_MOCKING === "true";

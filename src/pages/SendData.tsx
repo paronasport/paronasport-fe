@@ -6,6 +6,7 @@ import { Label } from "../components/core/Label";
 import {
   ButtonDimensions,
   LabelTags,
+  TextDimensions,
   TextWeight,
 } from "../types/constant";
 import { ColorVariants } from "../utils/utils";
@@ -32,7 +33,11 @@ export const SendData = () => {
   const [openIndexes, setOpenIndexes] = useState<Set<number>>(new Set());
   const [error, setError] = useState<string>("");
 
-  const { mutate: submitRegistration, isSuccess, isError } = useRegistration({
+  const {
+    mutate: submitRegistration,
+    isSuccess,
+    isError,
+  } = useRegistration({
     onSuccess: () => {
       setSquadName("");
       setPlayerCount("");
@@ -59,13 +64,15 @@ export const SendData = () => {
 
   const isFormValid = useMemo(
     () =>
-      hasPlayers &&
-      squadName.trim() !== "" &&
-      players.every(isPlayerComplete),
+      hasPlayers && squadName.trim() !== "" && players.every(isPlayerComplete),
     [players, squadName, hasPlayers],
   );
 
-  const updatePlayer = (index: number, field: keyof PlayerForm, value: string) => {
+  const updatePlayer = (
+    index: number,
+    field: keyof PlayerForm,
+    value: string,
+  ) => {
     setPlayerData((prev) => ({
       ...prev,
       [index]: { ...prev[index], [field]: value },
@@ -98,21 +105,39 @@ export const SendData = () => {
       <Container>
         <form
           onSubmit={handleSubmit}
-          className="max-w-lg mx-auto px-4 py-10 flex flex-col gap-5"
+          className="max-w-lg mx-auto py-3 flex flex-col gap-5"
         >
           <div className="mb-2">
-            <p className="text-xs tracking-[0.3em] text-emerald-400 uppercase mb-1">
-              Gestione Squadra
-            </p>
-            <h1 className="text-3xl font-bold text-white tracking-tight">
-              Registrazione Giocatori
-            </h1>
+            <Label
+              label="Gestione Squadra"
+              tag={LabelTags.p}
+              color={ColorVariants.text.emerald}
+              additionalClasses="uppercase mb-1 tracking-[0.3em]"
+              weight={TextWeight.normal}
+              size={TextDimensions.small}
+              noMargin
+            />
+            <Label
+              label="Registrazione Giocatori"
+              tag={LabelTags.h1}
+              color={ColorVariants.text.white}
+              additionalClasses="tracking-tight"
+              weight={TextWeight.bold}
+              size={TextDimensions.xxlarge}
+              noMargin
+            />
           </div>
 
           <div className="bg-slate-900/60 border border-slate-700/50 rounded-2xl p-5 flex flex-col gap-4 backdrop-blur">
-            <p className="text-xs tracking-[0.2em] uppercase text-slate-400 font-semibold">
-              Dati Squadra
-            </p>
+            <Label
+              label="Dati Squadra"
+              tag={LabelTags.p}
+              color={ColorVariants.text.grayMedium}
+              additionalClasses="tracking-[0.2em] uppercase"
+              weight={TextWeight.semibold}
+              size={TextDimensions.xsmall}
+              noMargin
+            />
             <Input
               type="text"
               placeholder="Nome squadra"
@@ -129,13 +154,24 @@ export const SendData = () => {
 
           {hasPlayers && (
             <div className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-slate-400 tracking-wide uppercase">
-                  Giocatori compilati
-                </span>
-                <span className="text-xs font-bold text-emerald-400">
-                  {completedCount} / {count}
-                </span>
+              <div className="flex flex-row justify-between items-center">
+                <Label
+                  label="Giocatori compilati"
+                  tag={LabelTags.p}
+                  color={ColorVariants.text.grayMedium}
+                  additionalClasses="tracking-wide uppercase"
+                  weight={TextWeight.semibold}
+                  size={TextDimensions.xsmall}
+                  noMargin
+                />
+                <Label
+                  label={`${completedCount} / ${count}`}
+                  tag={LabelTags.p}
+                  color={ColorVariants.text.emerald}
+                  weight={TextWeight.bold}
+                  size={TextDimensions.xsmall}
+                  noMargin
+                />
               </div>
               <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
                 <div
@@ -150,7 +186,9 @@ export const SendData = () => {
             players.map((player, idx) => {
               const isOpen = openIndexes.has(idx);
               const complete = isPlayerComplete(player);
-              const label = player.name.trim() ? player.name : `Giocatore ${idx + 1}`;
+              const label = player.name.trim()
+                ? player.name
+                : `Giocatore ${idx + 1}`;
 
               return (
                 <div
@@ -170,13 +208,25 @@ export const SendData = () => {
                             : "bg-slate-600"
                         }`}
                       />
-                      <span className="text-white font-semibold text-sm tracking-wide">
-                        {label}
-                      </span>
+                      <Label
+                        label={label}
+                        tag={LabelTags.p}
+                        color={ColorVariants.text.white}
+                        additionalClasses="tracking-wide"
+                        weight={TextWeight.semibold}
+                        size={TextDimensions.small}
+                        noMargin
+                      />
                       {complete && (
-                        <span className="text-[10px] text-emerald-400 border border-emerald-400/30 px-2 py-0.5 rounded-full">
-                          completo
-                        </span>
+                        <Label
+                          label="Completo"
+                          tag={LabelTags.p}
+                          color={ColorVariants.text.emerald}
+                          additionalClasses="border border-emerald-400/30 px-2 py-0.5 rounded-full"
+                          weight={TextWeight.semibold}
+                          size={TextDimensions.xsmall}
+                          noMargin
+                        />
                       )}
                     </div>
                     <svg
@@ -186,7 +236,11 @@ export const SendData = () => {
                       stroke="currentColor"
                       strokeWidth={2}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </button>
 
@@ -253,7 +307,11 @@ export const SendData = () => {
 
           {hasPlayers && (
             <Button
-              label={isFormValid ? "Invia tutti i giocatori" : `Completa tutti i campi (${completedCount}/${count})`}
+              label={
+                isFormValid
+                  ? "Invia tutti i giocatori"
+                  : `Completa tutti i campi (${completedCount}/${count})`
+              }
               dimension={ButtonDimensions.large}
               bgColor={ColorVariants.bg.grayDark}
               colorLabel={ColorVariants.text.white}

@@ -32,11 +32,12 @@ export const LabelTags = {
 export type LabelTagsConst = (typeof LabelTags)[keyof typeof LabelTags];
 
 export const TextDimensions = {
+  xsmall: "text-xs",
   small: "text-sm",
   medium: "text-base",
   large: "text-lg",
   xlarge: "text-2xl",
-  xxxxlarge: "text-8xl",
+  xxlarge: "text-3xl",
 } as const;
 
 export type TextDimensionsConst =

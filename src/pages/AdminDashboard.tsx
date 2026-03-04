@@ -2,6 +2,9 @@ import { useState } from "react";
 import { usePlayers } from "../hooks/usePlayers";
 import { exportSquadToExcel, groupBySquad } from "../utils/orgFunctions";
 import { Loader } from "../components/core/Loader";
+import { Label } from "../components/core/Label";
+import { LabelTags, TextDimensions, TextWeight } from "../types/constant";
+import { ColorVariants } from "../utils/utils";
 
 export const AdminDashboard = () => {
   const [openSquads, setOpenSquads] = useState<Set<string>>(new Set());
@@ -27,18 +30,45 @@ export const AdminDashboard = () => {
       ) : (
         <>
           <div className="mb-10">
-            <p className="text-xs tracking-[0.3em] text-emerald-400 uppercase mb-1">
-              Gestione Squadre
-            </p>
-            <h1 className="text-3xl font-bold text-white tracking-tight">
-              Registro Giocatori
-            </h1>
-            <div className="mt-2 flex items-center gap-3 text-slate-400 text-sm">
-              <span>{squads.length} squadre</span>
-              <span className="text-slate-600">·</span>
-              <span>
-                {squads.reduce((acc, s) => acc + s.players.length, 0)} giocatori
-              </span>
+            <Label
+              label="Gestione Squadra"
+              tag={LabelTags.p}
+              color={ColorVariants.text.emerald}
+              additionalClasses="uppercase mb-1 tracking-[0.3em]"
+              weight={TextWeight.normal}
+              size={TextDimensions.small}
+              noMargin
+            />
+            <Label
+              label="Registro Giocatori"
+              tag={LabelTags.h1}
+              color={ColorVariants.text.white}
+              additionalClasses="tracking-tight"
+              weight={TextWeight.bold}
+              size={TextDimensions.xxlarge}
+              noMargin
+            />
+            <div className="mt-2 flex items-center gap-3">
+              <Label
+                label={`${squads.length} squadre`}
+                tag={LabelTags.p}
+                color={ColorVariants.text.grayMedium}
+                size={TextDimensions.small}
+                noMargin
+              />
+              <Label
+                label="·"
+                tag={LabelTags.p}
+                color={ColorVariants.text.grayDark}
+                noMargin
+              />
+              <Label
+                label={`${squads.reduce((acc, s) => acc + s.players.length, 0)} giocatori`}
+                tag={LabelTags.p}
+                color={ColorVariants.text.grayMedium}
+                size={TextDimensions.small}
+                noMargin
+              />
             </div>
           </div>
           <div className="flex flex-col gap-3">
@@ -51,16 +81,27 @@ export const AdminDashboard = () => {
                 >
                   <button
                     onClick={() => toggleSquad(squad.squadName)}
-                    className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/50 transition-colors duration-200"
+                    className="cursor-pointer w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/50 transition-colors duration-200"
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-row items-center gap-4">
                       <div className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
-                      <span className="text-white font-semibold text-sm tracking-wide">
-                        {squad.squadName}
-                      </span>
-                      <span className="text-xs text-slate-500 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700">
-                        {squad.players.length} giocatori
-                      </span>
+                      <Label
+                        label={squad.squadName}
+                        tag={LabelTags.p}
+                        color={ColorVariants.text.white}
+                        weight={TextWeight.semibold}
+                        size={TextDimensions.small}
+                        additionalClasses="tracking-wide"
+                        noMargin
+                      />
+                      <Label
+                        label={`${squad.players.length} giocatori`}
+                        tag={LabelTags.p}
+                        color={ColorVariants.text.grayMedium}
+                        size={TextDimensions.xsmall}
+                        additionalClasses="bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700"
+                        noMargin
+                      />
                     </div>
 
                     <div className="flex items-center gap-3">
@@ -69,7 +110,7 @@ export const AdminDashboard = () => {
                           e.stopPropagation();
                           exportSquadToExcel(squad);
                         }}
-                        className="flex items-center gap-1.5 text-xs text-emerald-400 border border-emerald-400/30 hover:border-emerald-400 hover:bg-emerald-400/10 px-3 py-1.5 rounded-lg transition-all duration-200"
+                        className="cursor-pointer flex flex-row items-center gap-1.5 text-xs text-emerald-400 border border-emerald-400/30 hover:border-emerald-400 hover:bg-emerald-400/10 px-3 py-1.5 rounded-lg transition-all duration-200"
                       >
                         <svg
                           className="w-3.5 h-3.5"
@@ -84,7 +125,13 @@ export const AdminDashboard = () => {
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                           />
                         </svg>
-                        Excel
+                        <Label
+                          label="Excel"
+                          tag={LabelTags.p}
+                          color={ColorVariants.text.emerald}
+                          size={TextDimensions.xsmall}
+                          noMargin
+                        />
                       </button>
 
                       <svg
@@ -111,30 +158,75 @@ export const AdminDashboard = () => {
                     }`}
                   >
                     <div className="p-5">
-                      <div className="grid grid-cols-4 gap-3 text-[10px] tracking-[0.15em] uppercase text-slate-500 border-b border-slate-700/50 pb-2 mb-1">
-                        <span>Nome</span>
-                        <span>Cognome</span>
-                        <span>Cod. CI</span>
-                        <span>Data Nascita</span>
+                      <div className="grid grid-cols-4 gap-3 border-b border-slate-700/50 pb-2 mb-1">
+                        <Label
+                          label="Nome"
+                          tag={LabelTags.p}
+                          color={ColorVariants.text.grayMedium}
+                          size={TextDimensions.xsmall}
+                          additionalClasses="uppercase"
+                          noMargin
+                        />
+                        <Label
+                          label="Cognome"
+                          tag={LabelTags.p}
+                          color={ColorVariants.text.grayMedium}
+                          size={TextDimensions.xsmall}
+                          additionalClasses="uppercase"
+                          noMargin
+                        />
+                        <Label
+                          label="Cod. CI"
+                          tag={LabelTags.p}
+                          color={ColorVariants.text.grayMedium}
+                          size={TextDimensions.xsmall}
+                          additionalClasses="uppercase"
+                          noMargin
+                        />
+                        <Label
+                          label="Data Nascita"
+                          tag={LabelTags.p}
+                          color={ColorVariants.text.grayMedium}
+                          size={TextDimensions.xsmall}
+                          additionalClasses="uppercase"
+                          noMargin
+                        />
                       </div>
 
                       {squad.players.map((player, idx) => (
                         <div
                           key={`${player.ciId}-${idx}`}
-                          className="grid grid-cols-4 gap-3 py-2.5 border-b border-slate-800/50 last:border-0 hover:bg-slate-800/30 rounded px-1 transition-colors duration-150"
+                          className="grid grid-cols-4 gap-3 py-2.5 border-b border-slate-800/50 last:border-0 rounded px-1"
                         >
-                          <span className="text-sm text-white">
-                            {player.name}
-                          </span>
-                          <span className="text-sm text-white">
-                            {player.surname}
-                          </span>
-                          <span className="text-sm text-slate-400 font-mono text-xs">
-                            {player.ciId}
-                          </span>
-                          <span className="text-sm text-slate-400">
-                            {player.birthDate}
-                          </span>
+                          <Label
+                            label={player.name}
+                            tag={LabelTags.p}
+                            color={ColorVariants.text.white}
+                            size={TextDimensions.small}
+                            noMargin
+                          />
+                          <Label
+                            label={player.surname}
+                            tag={LabelTags.p}
+                            color={ColorVariants.text.white}
+                            size={TextDimensions.small}
+                            noMargin
+                          />
+                          <Label
+                            label={player.ciId}
+                            tag={LabelTags.p}
+                            color={ColorVariants.text.white}
+                            size={TextDimensions.small}
+                            noMargin
+                          />
+                          <Label
+                            label={player.birthDate}
+                            tag={LabelTags.p}
+                            color={ColorVariants.text.white}
+                            size={TextDimensions.small}
+                            additionalClasses="font-mono"
+                            noMargin
+                          />
                         </div>
                       ))}
                     </div>
