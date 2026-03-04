@@ -89,7 +89,6 @@ export const DatePicker = ({ onConfirm }: BirthDatePickerProps) => {
 
   return (
     <div className="relative w-80">
-      {/* Input trigger */}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         type="button"
@@ -122,10 +121,8 @@ export const DatePicker = ({ onConfirm }: BirthDatePickerProps) => {
         </svg>
       </button>
 
-      {/* Calendar dropdown */}
       {isOpen && (
         <div className="absolute top-14 left-0 z-50 bg-white rounded-3xl p-6 w-80 shadow-xl">
-          {/* Nav */}
           <div className="flex items-center justify-between mb-5">
             <button
               onClick={prevMonth}
@@ -175,7 +172,6 @@ export const DatePicker = ({ onConfirm }: BirthDatePickerProps) => {
             </button>
           </div>
 
-          {/* Month picker */}
           {view === "month" && (
             <div className="grid grid-cols-3 gap-2">
               {MONTHS.map((m, i) => (
@@ -197,7 +193,6 @@ export const DatePicker = ({ onConfirm }: BirthDatePickerProps) => {
             </div>
           )}
 
-          {/* Year picker */}
           {view === "year" && (
             <div className="max-h-56 overflow-y-auto grid grid-cols-4 gap-1.5">
               {years.map((y) => (
@@ -219,7 +214,6 @@ export const DatePicker = ({ onConfirm }: BirthDatePickerProps) => {
             </div>
           )}
 
-          {/* Day grid */}
           {view === "day" && (
             <>
               <div className="grid grid-cols-7 mb-1">

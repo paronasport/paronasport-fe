@@ -17,14 +17,15 @@ export const SendData = () => {
   const [name, setName] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
   const [ciId, setCiId] = useState<string>("");
-  const [birthDate, setBirthDate] = useState<Date>(new Date());
+  const [birthDate, setBirthDate] = useState<string>("");
+  const [squadName, setSquadName] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { mutate: submitRegistration, isSuccess, isError } = useRegistration();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try{
-      submitRegistration({ name, surname, ciId, birthDate });
+      submitRegistration({ name, surname, ciId, birthDate, squadName });
     } catch (err){
       setError(err as string)
     }
@@ -46,6 +47,12 @@ export const SendData = () => {
         />
         <Input
           type={"text"}
+          placeholder={"Nome squadra"}
+          value={squadName}
+          setValue={setSquadName}
+        />
+        <Input
+          type={"text"}
           placeholder={"Nome"}
           value={name}
           setValue={setName}
@@ -62,7 +69,7 @@ export const SendData = () => {
           value={ciId}
           setValue={setCiId}
         />
-        <DatePicker onConfirm={(date: Date) => setBirthDate(date)} />
+        <DatePicker onConfirm={(date: Date) => setBirthDate(date.toString())} />
         {isError && (
           <Label
             label={error}

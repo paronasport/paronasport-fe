@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import type { RegistrationData } from "../types/types";
+import type { Player } from "../types/types";
 import { RegistrationService } from "../services/api/datas";
 
 export const useRegistration = () => {
@@ -8,9 +8,9 @@ export const useRegistration = () => {
   return useMutation({
     mutationFn: isMocking
       ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        async (_data: RegistrationData) => {
+        async (_data: Player) => {
           await new Promise((resolve) => setTimeout(resolve, 800));
         }
-      : (data: RegistrationData) => RegistrationService.submitData(data),
+      : (data: Player) => RegistrationService.submitData(data),
   });
 };
