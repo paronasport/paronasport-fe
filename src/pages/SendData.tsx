@@ -100,7 +100,6 @@ export const SendData = () => {
           onSubmit={handleSubmit}
           className="max-w-lg mx-auto px-4 py-10 flex flex-col gap-5"
         >
-          {/* Header */}
           <div className="mb-2">
             <p className="text-xs tracking-[0.3em] text-emerald-400 uppercase mb-1">
               Gestione Squadra
@@ -110,7 +109,6 @@ export const SendData = () => {
             </h1>
           </div>
 
-          {/* Squad info card */}
           <div className="bg-slate-900/60 border border-slate-700/50 rounded-2xl p-5 flex flex-col gap-4 backdrop-blur">
             <p className="text-xs tracking-[0.2em] uppercase text-slate-400 font-semibold">
               Dati Squadra
@@ -129,7 +127,6 @@ export const SendData = () => {
             />
           </div>
 
-          {/* Progress bar */}
           {hasPlayers && (
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
@@ -149,7 +146,6 @@ export const SendData = () => {
             </div>
           )}
 
-          {/* Player accordions */}
           {hasPlayers &&
             players.map((player, idx) => {
               const isOpen = openIndexes.has(idx);
@@ -161,14 +157,12 @@ export const SendData = () => {
                   key={idx}
                   className="rounded-2xl border border-slate-700/50 bg-slate-900/60 backdrop-blur relative transition-all duration-300"
                 >
-                  {/* Accordion header */}
                   <button
                     type="button"
                     onClick={() => toggleAccordion(idx)}
                     className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/50 transition-colors duration-200"
                   >
                     <div className="flex items-center gap-3">
-                      {/* Status dot */}
                       <div
                         className={`h-2 w-2 rounded-full transition-colors duration-300 ${
                           complete
@@ -196,7 +190,6 @@ export const SendData = () => {
                     </svg>
                   </button>
 
-                  {/* Accordion body */}
                   <div
                     className={`transition-all duration-300 ease-in-out ${
                       isOpen
@@ -235,7 +228,6 @@ export const SendData = () => {
               );
             })}
 
-          {/* Feedback */}
           {isError && (
             <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
               <Label
@@ -259,7 +251,6 @@ export const SendData = () => {
             </div>
           )}
 
-          {/* Submit */}
           {hasPlayers && (
             <Button
               label={isFormValid ? "Invia tutti i giocatori" : `Completa tutti i campi (${completedCount}/${count})`}
