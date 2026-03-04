@@ -93,20 +93,20 @@ export const DatePicker = ({ onConfirm }: BirthDatePickerProps) => {
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         type="button"
-        className="w-full flex items-center justify-between px-4 py-3 bg-white rounded border border-gray-300 cursor-pointer outline-none focus:outline-none focus-visible:outline-none hover:border-gray-300 transition-colors"
+        className="h-[42px] w-full flex items-center justify-between p-2 bg-white rounded border border-gray-300 cursor-pointer outline-none focus:outline-none focus-visible:outline-none hover:border-gray-300 transition-colors"
       >
         <span
           className={
             selected
-              ? "text-gray-900 text-sm font-medium"
-              : "text-gray-400 text-sm"
+              ? "text-gray-900"
+              : "text-gray-400"
           }
         >
           {selected ? formatDate(selected) : "Seleziona data di nascita"}
         </span>
         <svg
           className={
-            "w-4 h-4 text-gray-400 transition-transform " +
+            "w-4 h-4 text-gray-400 transition-transform" +
             (isOpen ? "rotate-180" : "")
           }
           fill="none"

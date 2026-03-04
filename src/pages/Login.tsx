@@ -13,7 +13,7 @@ import { Input } from "../components/core/Input";
 import { Container } from "../components/core/Container";
 import { useAuth } from "../hooks/useAuth";
 
-export function TournamentAdminLogin() {
+export function Login() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");

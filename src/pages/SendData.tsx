@@ -13,7 +13,7 @@ import { ColorVariants } from "../utils/utils";
 import { DatePicker } from "../components/core/DatePicker";
 import { useRegistration } from "../hooks/useReservation";
 
-export const TournamentHome = () => {
+export const SendData = () => {
   const [name, setName] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
   const [ciId, setCiId] = useState<string>("");
