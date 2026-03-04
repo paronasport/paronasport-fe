@@ -2,7 +2,7 @@ interface InputProps {
   type: string;
   placeholder: string;
   value: string;
-  setValue: (value: React.SetStateAction<string>) => void;
+  setValue: (value: string) => void;
 }
 
 export const Input = ({ type, placeholder, value, setValue }: InputProps) => {

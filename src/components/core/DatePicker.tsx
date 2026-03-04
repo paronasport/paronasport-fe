@@ -88,7 +88,7 @@ export const DatePicker = ({ onConfirm }: BirthDatePickerProps) => {
   const navBtn = baseBtn + " font-semibold px-3 py-1.5 rounded-xl";
 
   return (
-    <div className="relative w-80">
+    <div className="w-full">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         type="button"
@@ -122,7 +122,7 @@ export const DatePicker = ({ onConfirm }: BirthDatePickerProps) => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-14 left-0 z-50 bg-white rounded-3xl p-6 w-80 shadow-xl">
+        <div className="fixed  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white rounded-3xl p-6 w-80 shadow-xl">
           <div className="flex items-center justify-between mb-5">
             <button
               onClick={prevMonth}
