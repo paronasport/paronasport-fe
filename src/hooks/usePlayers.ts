@@ -11,6 +11,6 @@ export const usePlayers = () => {
     queryKey: ["players", MOCK_COUNT],
     queryFn: isMocking
       ? () => generateMockPlayers(MOCK_COUNT)
-      : PlayerService.getPlayers,
+      : PlayerService.getTeams,
   });
 };

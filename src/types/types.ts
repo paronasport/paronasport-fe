@@ -1,12 +1,13 @@
 export interface Player {
+  id: number;
   name: string;
   surname: string;
   ciId: string;
   birthDate: string;
-  squadName: string;
+  teamName: string;
 }
 
 export interface SquadGroup {
-  squadName: string;
+  name: string;
   players: Player[];
 }

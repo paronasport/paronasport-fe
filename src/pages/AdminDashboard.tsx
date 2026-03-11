@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { usePlayers } from "../hooks/usePlayers";
-import { exportSquadToExcel, groupBySquad } from "../utils/orgFunctions";
+import { exportSquadToExcel } from "../utils/orgFunctions";
 import { Loader } from "../components/core/Loader";
 import { Label } from "../components/core/Label";
 import { LabelTags, TextDimensions, TextWeight } from "../types/constant";
@@ -8,8 +8,7 @@ import { ColorVariants } from "../utils/utils";
 
 export const AdminDashboard = () => {
   const [openSquads, setOpenSquads] = useState<Set<string>>(new Set());
-  const { data: players = [], isLoading } = usePlayers();
-  const squads = groupBySquad(players);
+  const { data = [], isLoading } = usePlayers();
 
   const toggleSquad = (squadName: string) => {
     setOpenSquads((prev) => {
@@ -50,7 +49,7 @@ export const AdminDashboard = () => {
             />
             <div className="mt-2 flex items-center gap-3">
               <Label
-                label={`${squads.length} squadre`}
+                label={`${data.length} squadre`}
                 tag={LabelTags.p}
                 color={ColorVariants.text.grayMedium}
                 size={TextDimensions.small}
@@ -63,7 +62,7 @@ export const AdminDashboard = () => {
                 noMargin
               />
               <Label
-                label={`${squads.reduce((acc, s) => acc + s.players.length, 0)} giocatori`}
+                label={`${data.reduce((acc, s) => acc + s.players.length, 0)} giocatori`}
                 tag={LabelTags.p}
                 color={ColorVariants.text.grayMedium}
                 size={TextDimensions.small}
@@ -72,21 +71,21 @@ export const AdminDashboard = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            {squads.map((squad) => {
-              const isOpen = openSquads.has(squad.squadName);
+            {data.map((squad) => {
+              const isOpen = openSquads.has(squad.name);
               return (
                 <div
-                  key={squad.squadName}
+                  key={squad.name}
                   className="rounded-xl border border-slate-700/50 bg-slate-900/60 backdrop-blur overflow-hidden transition-all duration-300"
                 >
                   <button
-                    onClick={() => toggleSquad(squad.squadName)}
+                    onClick={() => toggleSquad(squad.name)}
                     className="cursor-pointer w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/50 transition-colors duration-200"
                   >
                     <div className="flex flex-row items-center gap-4">
                       <div className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
                       <Label
-                        label={squad.squadName}
+                        label={squad.name}
                         tag={LabelTags.p}
                         color={ColorVariants.text.white}
                         weight={TextWeight.semibold}
@@ -193,42 +192,44 @@ export const AdminDashboard = () => {
                         />
                       </div>
 
-                      {squad.players.map((player, idx) => (
-                        <div
-                          key={`${player.ciId}-${idx}`}
-                          className="grid grid-cols-4 gap-3 py-2.5 border-b border-slate-800/50 last:border-0 rounded px-1"
-                        >
-                          <Label
-                            label={player.name}
-                            tag={LabelTags.p}
-                            color={ColorVariants.text.white}
-                            size={TextDimensions.small}
-                            noMargin
-                          />
-                          <Label
-                            label={player.surname}
-                            tag={LabelTags.p}
-                            color={ColorVariants.text.white}
-                            size={TextDimensions.small}
-                            noMargin
-                          />
-                          <Label
-                            label={player.ciId}
-                            tag={LabelTags.p}
-                            color={ColorVariants.text.white}
-                            size={TextDimensions.small}
-                            noMargin
-                          />
-                          <Label
-                            label={player.birthDate}
-                            tag={LabelTags.p}
-                            color={ColorVariants.text.white}
-                            size={TextDimensions.small}
-                            additionalClasses="font-mono"
-                            noMargin
-                          />
-                        </div>
-                      ))}
+                      {squad.players.map((player, idx) => {
+                        return (
+                          <div
+                            key={`${player.ciId}-${idx}`}
+                            className="grid grid-cols-4 gap-3 py-2.5 border-b border-slate-800/50 last:border-0 rounded px-1"
+                          >
+                            <Label
+                              label={player.name}
+                              tag={LabelTags.p}
+                              color={ColorVariants.text.white}
+                              size={TextDimensions.small}
+                              noMargin
+                            />
+                            <Label
+                              label={player.surname}
+                              tag={LabelTags.p}
+                              color={ColorVariants.text.white}
+                              size={TextDimensions.small}
+                              noMargin
+                            />
+                            <Label
+                              label={player.ciId}
+                              tag={LabelTags.p}
+                              color={ColorVariants.text.white}
+                              size={TextDimensions.small}
+                              noMargin
+                            />
+                            <Label
+                              label={player.birthDate}
+                              tag={LabelTags.p}
+                              color={ColorVariants.text.white}
+                              size={TextDimensions.small}
+                              additionalClasses="font-mono"
+                              noMargin
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

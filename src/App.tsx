@@ -1,8 +1,8 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { ProtectedRoute } from './components/general/ProtectedRoute'
-import { Login } from './pages/Login'
-import { SendData } from './pages/SendData'
-import { AdminDashboard } from './pages/AdminDashboard'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ProtectedRoute } from "./components/general/ProtectedRoute";
+import { Login } from "./pages/Login";
+import { SendData } from "./pages/SendData";
+import { AdminDashboard } from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Route path="/" element={<SendData />} />
         <Route path="/login" element={<Login />} />
         <Route
-          path="/login/dashboard"
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <AdminDashboard />
@@ -20,7 +20,7 @@ function App() {
         />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,6 +1,6 @@
-import type { Player } from "../../types/types";
+import type { SquadGroup } from "../../types/types";
 import { httpClient } from "../client/httpClient";
 
 export const PlayerService = {
-  getPlayers: (): Promise<Player[]> => httpClient.get("/api/players"),
+  getTeams: (): Promise<SquadGroup[]> => httpClient.get("/api/teams/"),
 };

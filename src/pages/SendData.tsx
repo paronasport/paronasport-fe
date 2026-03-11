@@ -94,7 +94,10 @@ export const SendData = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      submitRegistration(players.map((player) => ({ ...player, squadName })));
+      submitRegistration({
+        name: squadName,
+        players: players.map((player) => ({ ...player })),
+      });
     } catch (err) {
       setError(err as string);
     }
@@ -273,7 +276,11 @@ export const SendData = () => {
                       />
                       <DatePicker
                         onConfirm={(date: Date) =>
-                          updatePlayer(idx, "birthDate", date.toString())
+                          updatePlayer(
+                            idx,
+                            "birthDate",
+                            new Date(date).toLocaleDateString("it-IT"),
+                          )
                         }
                       />
                     </div>
