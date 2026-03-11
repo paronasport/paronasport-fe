@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import type { SquadGroup } from "../types/types";
+import type { SquadGroupPayload } from "../types/types";
 import { RegistrationService } from "../services/api/datas";
 
 interface UseRegistrationOptions {
@@ -13,10 +13,10 @@ export const useRegistration = (options?: UseRegistrationOptions) => {
   return useMutation({
     mutationFn: isMocking
       ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        async (_data: SquadGroup) => {
+        async (_data: SquadGroupPayload) => {
           await new Promise((resolve) => setTimeout(resolve, 800));
         }
-      : (data: SquadGroup) => RegistrationService.postTeams(data),
+      : (data: SquadGroupPayload) => RegistrationService.postTeams(data),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });

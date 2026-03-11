@@ -1,7 +1,7 @@
-import type { SquadGroup } from "../../types/types";
+import type { SquadGroupPayload } from "../../types/types";
 import { httpClient } from "../client/httpClient";
 
 export const RegistrationService = {
-  postTeams: (data: SquadGroup): Promise<void> =>
+  postTeams: (data: SquadGroupPayload): Promise<void> =>
     httpClient.post("/api/teams/", data),
 };

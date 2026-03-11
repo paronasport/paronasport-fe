@@ -27,11 +27,25 @@ const isPlayerComplete = (p: PlayerForm) =>
   p.birthDate.trim() !== "";
 
 export const SendData = () => {
+  const MIN_PLAYERS = 5;
+  const MAX_PLAYERS = 10;
+
   const [squadName, setSquadName] = useState<string>("");
   const [playerCount, setPlayerCount] = useState<string>("");
   const [playerData, setPlayerData] = useState<Record<number, PlayerForm>>({});
   const [openIndexes, setOpenIndexes] = useState<Set<number>>(new Set());
   const [error, setError] = useState<string>("");
+  const count = Number.parseInt(playerCount);
+  const hasPlayers =
+    !Number.isNaN(count) && count >= MIN_PLAYERS && count <= MAX_PLAYERS;
+
+  const countError =
+    playerCount !== "" &&
+    (count < MIN_PLAYERS
+      ? `Minimo ${MIN_PLAYERS} giocatori`
+      : count > MAX_PLAYERS
+        ? `Massimo ${MAX_PLAYERS} giocatori`
+        : "");
 
   const {
     mutate: submitRegistration,
@@ -45,9 +59,6 @@ export const SendData = () => {
       setOpenIndexes(new Set());
     },
   });
-
-  const count = Number.parseInt(playerCount);
-  const hasPlayers = !Number.isNaN(count) && count > 0;
 
   const players = useMemo(
     () =>
@@ -151,8 +162,20 @@ export const SendData = () => {
               type="number"
               placeholder="Numero di giocatori"
               value={playerCount}
-              setValue={setPlayerCount}
+              setValue={(v) => {
+                const n = Number.parseInt(v);
+                if (v === "" || (n >= 1 && n <= MAX_PLAYERS)) setPlayerCount(v);
+              }}
             />
+            {countError && (
+              <Label
+                label={countError}
+                tag={LabelTags.p}
+                color={ColorVariants.text.red}
+                weight={TextWeight.semibold}
+                noMargin
+              />
+            )}
           </div>
 
           {hasPlayers && (
