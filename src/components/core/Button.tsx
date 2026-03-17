@@ -19,6 +19,7 @@ interface ButtonProps {
   colorLabel?: string;
   disabled?: boolean;
   additionalClass?: string;
+  style?: React.CSSProperties;
 }
 
 export const Button = ({
@@ -32,7 +33,8 @@ export const Button = ({
   borderColor = ColorVariants.border.transparent,
   colorLabel,
   disabled,
-  additionalClass
+  additionalClass,
+  style,
 }: ButtonProps) => {
   const full = fullWidth ? "w-full" : "";
 
@@ -41,6 +43,7 @@ export const Button = ({
       onClick={onClick}
       className={`${dimension} flex items-center justify-center rounded-lg ${colorIcon} ${bgColor} border ${borderColor} ${full} outline-none cursor-pointer transition-opacity duration-200
         disabled:opacity-40 disabled:cursor-not-allowed ${additionalClass}`}
+      style={style}
       disabled={disabled}
     >
       {icon}

@@ -115,7 +115,15 @@ export const SendData = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e]">
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage: "url('/img/bg.jpeg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <Container>
         <form
           onSubmit={handleSubmit}
@@ -123,30 +131,26 @@ export const SendData = () => {
         >
           <div className="mb-2">
             <Label
-              label="Gestione Squadra"
-              tag={LabelTags.p}
-              color={ColorVariants.text.emerald}
-              additionalClasses="uppercase mb-1 tracking-[0.3em]"
-              weight={TextWeight.normal}
-              size={TextDimensions.small}
-              noMargin
-            />
-            <Label
-              label="Registrazione Giocatori"
-              tag={LabelTags.h1}
+              label={"Registrazione Giocatori".toUpperCase()}
+              tag={LabelTags.h3}
               color={ColorVariants.text.white}
-              additionalClasses="tracking-tight"
+              additionalClasses="tracking-tight mt-14 text-center"
               weight={TextWeight.bold}
-              size={TextDimensions.xxlarge}
+              size={TextDimensions.xlarge}
               noMargin
             />
           </div>
 
-          <div className="bg-slate-900/60 border border-slate-700/50 rounded-2xl p-5 flex flex-col gap-4 backdrop-blur">
+          <div
+            className="border border-white rounded-2xl p-5 flex flex-col gap-4 backdrop-blur"
+            style={{
+              background: "color-mix(in oklab, oklch(1 0 0) 70%, transparent)",
+            }}
+          >
             <Label
               label="Dati Squadra"
               tag={LabelTags.p}
-              color={ColorVariants.text.grayMedium}
+              color={ColorVariants.text.black}
               additionalClasses="tracking-[0.2em] uppercase"
               weight={TextWeight.semibold}
               size={TextDimensions.xsmall}
@@ -184,24 +188,24 @@ export const SendData = () => {
                 <Label
                   label="Giocatori compilati"
                   tag={LabelTags.p}
-                  color={ColorVariants.text.grayMedium}
+                  color={ColorVariants.text.white}
                   additionalClasses="tracking-wide uppercase"
-                  weight={TextWeight.semibold}
+                  weight={TextWeight.bold}
                   size={TextDimensions.xsmall}
                   noMargin
                 />
                 <Label
                   label={`${completedCount} / ${count}`}
                   tag={LabelTags.p}
-                  color={ColorVariants.text.emerald}
+                  color={ColorVariants.text.white}
                   weight={TextWeight.bold}
                   size={TextDimensions.xsmall}
                   noMargin
                 />
               </div>
-              <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-1.5 bg-black rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-emerald-400 rounded-full transition-all duration-500"
+                  className="h-full rounded-full transition-all duration-500 bg-white"
                   style={{ width: `${(completedCount / count) * 100}%` }}
                 />
               </div>
@@ -219,25 +223,29 @@ export const SendData = () => {
               return (
                 <div
                   key={idx}
-                  className="rounded-2xl border border-slate-700/50 bg-slate-900/60 backdrop-blur relative transition-all duration-300"
+                  className="rounded-2xl border border-white backdrop-blur relative transition-all duration-300"
+                  style={{
+                    background:
+                      "color-mix(in oklab, oklch(1 0 0) 70%, transparent)",
+                  }}
                 >
                   <button
                     type="button"
                     onClick={() => toggleAccordion(idx)}
-                    className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-800/50 transition-colors duration-200"
+                    className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/20 transition-colors duration-200"
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className={`h-2 w-2 rounded-full transition-colors duration-300 ${
                           complete
-                            ? "bg-emerald-400 shadow-[0_0_8px_#34d399]"
-                            : "bg-slate-600"
+                            ? "bg-[#e02b2a] shadow-[0_0_8px_#e02b2a]"
+                            : "bg-black"
                         }`}
                       />
                       <Label
                         label={label}
                         tag={LabelTags.p}
-                        color={ColorVariants.text.white}
+                        color={ColorVariants.text.black}
                         additionalClasses="tracking-wide"
                         weight={TextWeight.semibold}
                         size={TextDimensions.small}
@@ -247,8 +255,8 @@ export const SendData = () => {
                         <Label
                           label="Completo"
                           tag={LabelTags.p}
-                          color={ColorVariants.text.emerald}
-                          additionalClasses="border border-emerald-400/30 px-2 py-0.5 rounded-full"
+                          color={ColorVariants.text.red}
+                          additionalClasses="border border-[#e02b2a]/30 px-2 py-0.5 rounded-full"
                           weight={TextWeight.semibold}
                           size={TextDimensions.xsmall}
                           noMargin
@@ -256,7 +264,7 @@ export const SendData = () => {
                       )}
                     </div>
                     <svg
-                      className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                      className={`w-4 h-4 text-black transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -278,7 +286,7 @@ export const SendData = () => {
                     }`}
                   >
                     <div className="flex flex-col gap-3 px-5 pb-5 pt-1">
-                      <div className="h-px bg-slate-700/50 mb-1" />
+                      <div className="h-px bg-white/40 mb-1" />
                       <Input
                         type="text"
                         placeholder="Nome"
@@ -343,12 +351,15 @@ export const SendData = () => {
                   : `Completa tutti i campi (${completedCount}/${count})`
               }
               dimension={ButtonDimensions.large}
-              bgColor={ColorVariants.bg.grayDark}
-              colorLabel={ColorVariants.text.white}
-              borderColor={"border-emerald-500/30"}
+              colorLabel={ColorVariants.text.black}
+              borderColor={"border-white"}
               onClick={() => {}}
               disabled={!isFormValid}
               additionalClass={"mt-5"}
+              style={{
+                background:
+                  "color-mix(in oklab, oklch(1 0 0) 70%, transparent)",
+              }}
               fullWidth
             />
           )}

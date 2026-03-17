@@ -6,6 +6,7 @@ export const ColorVariants = {
     grayDark: "text-slate-600",
     green: "text-green-600",
     emerald: "text-emerald-400",
+    black: "text-black",
   },
   bg: {
     grayDark: "bg-gray-900",
