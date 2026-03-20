@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { type FormEvent, useMemo, useState } from "react";
 import { Button } from "../components/core/Button";
 import { Container } from "../components/core/Container";
 import { Input } from "../components/core/Input";
 import { Label } from "../components/core/Label";
+import { Loader } from "../components/core/Loader";
 import {
   ButtonDimensions,
   LabelTags,
@@ -12,6 +13,7 @@ import {
 import { ColorVariants } from "../utils/utils";
 import { DatePicker } from "../components/core/DatePicker";
 import { useRegistration } from "../hooks/useReservation";
+import { useAuth } from "../hooks/useAuth";
 
 type PlayerForm = {
   name: string;
@@ -26,15 +28,24 @@ const isPlayerComplete = (p: PlayerForm) =>
   p.ciId.trim() !== "" &&
   p.birthDate.trim() !== "";
 
+const cardStyle = {
+  background: "color-mix(in oklab, oklch(1 0 0) 70%, transparent)",
+};
+
 export const SendData = () => {
   const MIN_PLAYERS = 5;
   const MAX_PLAYERS = 10;
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [squadName, setSquadName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loginError, setLoginError] = useState<string>("");
+
   const [playerCount, setPlayerCount] = useState<string>("");
   const [playerData, setPlayerData] = useState<Record<number, PlayerForm>>({});
   const [openIndexes, setOpenIndexes] = useState<Set<number>>(new Set());
   const [error, setError] = useState<string>("");
+
   const count = Number.parseInt(playerCount);
   const hasPlayers =
     !Number.isNaN(count) && count >= MIN_PLAYERS && count <= MAX_PLAYERS;
@@ -47,13 +58,14 @@ export const SendData = () => {
         ? `Massimo ${MAX_PLAYERS} giocatori`
         : "");
 
+  const { mutate: login, isPending: isLoginPending } = useAuth();
+
   const {
     mutate: submitRegistration,
     isSuccess,
     isError,
   } = useRegistration({
     onSuccess: () => {
-      setSquadName("");
       setPlayerCount("");
       setPlayerData({});
       setOpenIndexes(new Set());
@@ -102,7 +114,24 @@ export const SendData = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoginError("");
+    login(
+      { username: squadName, password },
+      {
+        onSuccess: ({ token }) => {
+          localStorage.setItem("auth_token", token);
+          setIsLoggedIn(true);
+        },
+        onError: () => {
+          setLoginError("Nome squadra o password errati");
+        },
+      },
+    );
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       submitRegistration({
@@ -114,16 +143,91 @@ export const SendData = () => {
     }
   };
 
+  const bgWrapper = {
+    backgroundImage: "url('/img/bg.jpeg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundAttachment: "fixed",
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={bgWrapper}>
+        <Container>
+          {isLoginPending ? (
+            <Loader />
+          ) : (
+            <form
+              onSubmit={handleLogin}
+              className="max-w-sm mx-auto flex flex-col gap-5"
+            >
+              <div className="mb-2">
+                <Label
+                  label={"Accesso Squadra".toUpperCase()}
+                  tag={LabelTags.h3}
+                  color={ColorVariants.text.white}
+                  additionalClasses="tracking-tight mt-14 text-center"
+                  weight={TextWeight.bold}
+                  size={TextDimensions.xlarge}
+                  noMargin
+                />
+              </div>
+
+              <div
+                className="border border-white rounded-2xl p-5 flex flex-col gap-4 backdrop-blur"
+                style={cardStyle}
+              >
+                <Label
+                  label="Dati Accesso"
+                  tag={LabelTags.p}
+                  color={ColorVariants.text.black}
+                  additionalClasses="tracking-[0.2em] uppercase"
+                  weight={TextWeight.semibold}
+                  size={TextDimensions.xsmall}
+                  noMargin
+                />
+                <Input
+                  type="text"
+                  placeholder="Nome squadra"
+                  value={squadName}
+                  setValue={setSquadName}
+                />
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  setValue={setPassword}
+                />
+                {loginError && (
+                  <Label
+                    label={loginError}
+                    tag={LabelTags.p}
+                    color={ColorVariants.text.red}
+                    weight={TextWeight.semibold}
+                    noMargin
+                  />
+                )}
+              </div>
+
+              <Button
+                label="Accedi"
+                dimension={ButtonDimensions.large}
+                colorLabel={ColorVariants.text.black}
+                borderColor="border-white"
+                onClick={() => {}}
+                style={cardStyle}
+                disabled={squadName.trim() === "" || password.trim() === ""}
+                fullWidth
+              />
+            </form>
+          )}
+        </Container>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        backgroundImage: "url('/img/bg.jpeg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
+    <div className="min-h-screen" style={bgWrapper}>
       <Container>
         <form
           onSubmit={handleSubmit}
@@ -143,9 +247,7 @@ export const SendData = () => {
 
           <div
             className="border border-white rounded-2xl p-5 flex flex-col gap-4 backdrop-blur"
-            style={{
-              background: "color-mix(in oklab, oklch(1 0 0) 70%, transparent)",
-            }}
+            style={cardStyle}
           >
             <Label
               label="Dati Squadra"
@@ -156,12 +258,16 @@ export const SendData = () => {
               size={TextDimensions.xsmall}
               noMargin
             />
-            <Input
-              type="text"
-              placeholder="Nome squadra"
-              value={squadName}
-              setValue={setSquadName}
-            />
+            <div className="px-1">
+              <Label
+                label={squadName}
+                tag={LabelTags.p}
+                color={ColorVariants.text.black}
+                weight={TextWeight.bold}
+                size={TextDimensions.medium}
+                noMargin
+              />
+            </div>
             <Input
               type="number"
               placeholder="Numero di giocatori"
@@ -224,10 +330,7 @@ export const SendData = () => {
                 <div
                   key={idx}
                   className="rounded-2xl border border-white backdrop-blur relative transition-all duration-300"
-                  style={{
-                    background:
-                      "color-mix(in oklab, oklch(1 0 0) 70%, transparent)",
-                  }}
+                  style={cardStyle}
                 >
                   <button
                     type="button"
@@ -356,10 +459,7 @@ export const SendData = () => {
               onClick={() => {}}
               disabled={!isFormValid}
               additionalClass={"mt-5"}
-              style={{
-                background:
-                  "color-mix(in oklab, oklch(1 0 0) 70%, transparent)",
-              }}
+              style={cardStyle}
               fullWidth
             />
           )}
