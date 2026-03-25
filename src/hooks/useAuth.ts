@@ -9,7 +9,14 @@ export const useAuth = () => {
     mutationFn: isMocking
       ? ({ username, password }: { username: string; password: string }) =>
           fakeLogin(username, password)
-      : ({ username, password }: { username: string; password: string }) =>
-          AuthService.login(username, password),
+      : ({
+          username,
+          password,
+          url,
+        }: {
+          username: string;
+          password: string;
+          url: string;
+        }) => AuthService.login(username, password, url),
   });
 };

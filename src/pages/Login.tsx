@@ -24,7 +24,7 @@ export function Login() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login(
-      { username, password },
+      { username, password, url: "admin" },
       {
         onSuccess: ({ token }) => {
           localStorage.setItem("auth_token", token);

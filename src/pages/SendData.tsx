@@ -14,6 +14,7 @@ import { ColorVariants } from "../utils/utils";
 import { DatePicker } from "../components/core/DatePicker";
 import { useRegistration } from "../hooks/useReservation";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 type PlayerForm = {
   name: string;
@@ -33,10 +34,11 @@ const cardStyle = {
 };
 
 export const SendData = () => {
-  const MIN_PLAYERS = 5;
+  const MIN_PLAYERS = 6;
   const MAX_PLAYERS = 10;
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [inputName, setInputName] = useState<string>("");
   const [squadName, setSquadName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loginError, setLoginError] = useState<string>("");
@@ -57,6 +59,8 @@ export const SendData = () => {
       : count > MAX_PLAYERS
         ? `Massimo ${MAX_PLAYERS} giocatori`
         : "");
+
+  const navigate = useNavigate();
 
   const { mutate: login, isPending: isLoginPending } = useAuth();
 
@@ -118,7 +122,7 @@ export const SendData = () => {
     e.preventDefault();
     setLoginError("");
     login(
-      { username: squadName, password },
+      { username: inputName, password, url: "teams" },
       {
         onSuccess: ({ token }) => {
           localStorage.setItem("auth_token", token);
@@ -134,10 +138,17 @@ export const SendData = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      submitRegistration({
-        name: squadName,
-        players: players.map((player) => ({ ...player })),
-      });
+      submitRegistration(
+        {
+          name: squadName,
+          players: players.map((player) => ({ ...player })),
+        },
+        {
+          onSuccess: () => {
+            navigate("/login");
+          },
+        },
+      );
     } catch (err) {
       setError(err as string);
     }
@@ -152,7 +163,10 @@ export const SendData = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={bgWrapper}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={bgWrapper}
+      >
         <Container>
           {isLoginPending ? (
             <Loader />
@@ -188,9 +202,9 @@ export const SendData = () => {
                 />
                 <Input
                   type="text"
-                  placeholder="Nome squadra"
-                  value={squadName}
-                  setValue={setSquadName}
+                  placeholder="Nome"
+                  value={inputName}
+                  setValue={setInputName}
                 />
                 <Input
                   type="password"
@@ -216,7 +230,7 @@ export const SendData = () => {
                 borderColor="border-white"
                 onClick={() => {}}
                 style={cardStyle}
-                disabled={squadName.trim() === "" || password.trim() === ""}
+                disabled={inputName.trim() === "" && password.trim() === ""}
                 fullWidth
               />
             </form>
@@ -258,16 +272,12 @@ export const SendData = () => {
               size={TextDimensions.xsmall}
               noMargin
             />
-            <div className="px-1">
-              <Label
-                label={squadName}
-                tag={LabelTags.p}
-                color={ColorVariants.text.black}
-                weight={TextWeight.bold}
-                size={TextDimensions.medium}
-                noMargin
-              />
-            </div>
+            <Input
+              type="text"
+              placeholder="Nome"
+              value={squadName}
+              setValue={setSquadName}
+            />
             <Input
               type="number"
               placeholder="Numero di giocatori"
