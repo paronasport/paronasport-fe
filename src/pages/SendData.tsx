@@ -173,7 +173,7 @@ export const SendData = () => {
           ) : (
             <form
               onSubmit={handleLogin}
-              className="max-w-sm mx-auto flex flex-col gap-5"
+              className="max-w-sm mx-auto flex flex-col gap-5 mt-2"
             >
               <div className="mb-2">
                 <Label
@@ -245,7 +245,7 @@ export const SendData = () => {
       <Container>
         <form
           onSubmit={handleSubmit}
-          className="max-w-lg mx-auto py-3 flex flex-col gap-5"
+          className="max-w-lg mx-auto py-3 flex flex-col gap-5 mt-4"
         >
           <div className="mb-2">
             <Label
