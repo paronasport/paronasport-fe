@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { usePlayers } from "../hooks/usePlayers";
-import { exportSquadToExcel } from "../utils/orgFunctions";
+import {
+  exportSquadToExcel,
+  exportAllSquadsToExcel,
+} from "../utils/orgFunctions";
 import { Loader } from "../components/core/Loader";
 import { Label } from "../components/core/Label";
 import { LabelTags, TextDimensions, TextWeight } from "../types/constant";
@@ -29,45 +32,74 @@ export const AdminDashboard = () => {
       ) : (
         <>
           <div className="mb-10">
-            <Label
-              label="Gestione Squadra"
-              tag={LabelTags.p}
-              color={ColorVariants.text.emerald}
-              additionalClasses="uppercase mb-1 tracking-[0.3em]"
-              weight={TextWeight.normal}
-              size={TextDimensions.small}
-              noMargin
-            />
-            <Label
-              label="Registro Giocatori"
-              tag={LabelTags.h1}
-              color={ColorVariants.text.white}
-              additionalClasses="tracking-tight"
-              weight={TextWeight.bold}
-              size={TextDimensions.xxlarge}
-              noMargin
-            />
-            <div className="mt-2 flex items-center gap-3">
-              <Label
-                label={`${data.length} squadre`}
-                tag={LabelTags.p}
-                color={ColorVariants.text.grayMedium}
-                size={TextDimensions.small}
-                noMargin
-              />
-              <Label
-                label="·"
-                tag={LabelTags.p}
-                color={ColorVariants.text.grayDark}
-                noMargin
-              />
-              <Label
-                label={`${data.reduce((acc, s) => acc + s.players.length, 0)} giocatori`}
-                tag={LabelTags.p}
-                color={ColorVariants.text.grayMedium}
-                size={TextDimensions.small}
-                noMargin
-              />
+            <div className="flex items-start justify-between">
+              <div>
+                <Label
+                  label="Gestione Squadra"
+                  tag={LabelTags.p}
+                  color={ColorVariants.text.emerald}
+                  additionalClasses="uppercase mb-1 tracking-[0.3em]"
+                  weight={TextWeight.normal}
+                  size={TextDimensions.small}
+                  noMargin
+                />
+                <Label
+                  label="Registro Giocatori"
+                  tag={LabelTags.h1}
+                  color={ColorVariants.text.white}
+                  additionalClasses="tracking-tight"
+                  weight={TextWeight.bold}
+                  size={TextDimensions.xxlarge}
+                  noMargin
+                />
+                <div className="mt-2 flex items-center gap-3">
+                  <Label
+                    label={`${data.length} squadre`}
+                    tag={LabelTags.p}
+                    color={ColorVariants.text.grayMedium}
+                    size={TextDimensions.small}
+                    noMargin
+                  />
+                  <Label
+                    label="·"
+                    tag={LabelTags.p}
+                    color={ColorVariants.text.grayDark}
+                    noMargin
+                  />
+                  <Label
+                    label={`${data.reduce((acc, s) => acc + s.players.length, 0)} giocatori`}
+                    tag={LabelTags.p}
+                    color={ColorVariants.text.grayMedium}
+                    size={TextDimensions.small}
+                    noMargin
+                  />
+                </div>
+              </div>
+              <button
+                onClick={() => exportAllSquadsToExcel(data)}
+                className="cursor-pointer flex flex-row items-center gap-1.5 text-xs text-emerald-400 border border-emerald-400/30 hover:border-emerald-400 hover:bg-emerald-400/10 px-3 py-1.5 rounded-lg transition-all duration-200"
+              >
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+                <Label
+                  label="Scarica Tutto"
+                  tag={LabelTags.p}
+                  color={ColorVariants.text.emerald}
+                  size={TextDimensions.xsmall}
+                  noMargin
+                />
+              </button>
             </div>
           </div>
           <div className="flex flex-col gap-3">
@@ -161,33 +193,37 @@ export const AdminDashboard = () => {
                         <Label
                           label="Nome"
                           tag={LabelTags.p}
-                          color={ColorVariants.text.grayMedium}
-                          size={TextDimensions.xsmall}
-                          additionalClasses="uppercase"
+                          color={ColorVariants.text.white}
+                          size={TextDimensions.small}
+                          additionalClasses="uppercase font-bold"
+                          weight={TextWeight.bold}
                           noMargin
                         />
                         <Label
                           label="Cognome"
                           tag={LabelTags.p}
-                          color={ColorVariants.text.grayMedium}
-                          size={TextDimensions.xsmall}
-                          additionalClasses="uppercase"
+                          color={ColorVariants.text.white}
+                          size={TextDimensions.small}
+                          additionalClasses="uppercase font-bold"
+                          weight={TextWeight.bold}
                           noMargin
                         />
                         <Label
                           label="Cod. CI"
                           tag={LabelTags.p}
-                          color={ColorVariants.text.grayMedium}
-                          size={TextDimensions.xsmall}
-                          additionalClasses="uppercase"
+                          color={ColorVariants.text.white}
+                          size={TextDimensions.small}
+                          additionalClasses="uppercase font-bold"
+                          weight={TextWeight.bold}
                           noMargin
                         />
                         <Label
                           label="Data Nascita"
                           tag={LabelTags.p}
-                          color={ColorVariants.text.grayMedium}
-                          size={TextDimensions.xsmall}
-                          additionalClasses="uppercase"
+                          color={ColorVariants.text.white}
+                          size={TextDimensions.small}
+                          additionalClasses="uppercase font-bold"
+                          weight={TextWeight.bold}
                           noMargin
                         />
                       </div>
