@@ -1,5 +1,5 @@
 import type { SquadGroup } from "../types/types";
-import * as XLSX from "xlsx";
+import * as XLSX from "xlsx-js-style";
 
 export const exportSquadToExcel = (squad: SquadGroup): void => {
   const data = squad.players.map((p) => ({
@@ -37,60 +37,60 @@ export const exportSquadToExcel = (squad: SquadGroup): void => {
 };
 
 export const exportAllSquadsToExcel = (squads: SquadGroup[]): void => {
-  const allData: Array<{
-    "Numeri maglia": string;
-    Squadra: string;
-    Nome: string;
-    Cognome: string;
-    "Cod. CI": string;
-    "Data di Nascita": string;
-  }> = [];
+  const rows: (string | undefined)[][] = [];
+  const merges: XLSX.Range[] = [];
 
   squads.forEach((squad, squadIndex) => {
-    squad.players.forEach((p) => {
-      allData.push({
-        "Numeri maglia": "",
-        Nome: p.name,
-        Cognome: p.surname,
-        "Cod. CI": p.ciId,
-        "Data di Nascita": p.birthDate,
-        Squadra: squad.name,
-      });
+    const squadNameRow = rows.length;
+
+    // Squad name row (merged across 5 columns)
+    rows.push([squad.name, undefined, undefined, undefined, undefined]);
+    merges.push({
+      s: { r: squadNameRow, c: 0 },
+      e: { r: squadNameRow, c: 4 },
     });
 
-    // Add empty row between squads (except after last squad)
+    // Column headers
+    rows.push([
+      "Numero maglia",
+      "Nome",
+      "Cognome",
+      "Cod. CI",
+      "Data di Nascita",
+    ]);
+
+    // Player rows
+    squad.players.forEach((p) => {
+      rows.push(["", p.name, p.surname, p.ciId, p.birthDate]);
+    });
+
+    // 3 empty rows between squads (except after last squad)
     if (squadIndex < squads.length - 1) {
-      allData.push({
-        "Numeri maglia": "",
-        Nome: "",
-        Cognome: "",
-        "Cod. CI": "",
-        "Data di Nascita": "",
-        Squadra: "",
-      });
+      rows.push([], [], []);
     }
   });
 
-  const worksheet = XLSX.utils.json_to_sheet(allData);
+  const worksheet = XLSX.utils.aoa_to_sheet(rows);
   const workbook = XLSX.utils.book_new();
 
+  worksheet["!merges"] = merges;
   worksheet["!cols"] = [
     { wch: 15 },
-    { wch: 15 },
+    { wch: 20 },
     { wch: 20 },
     { wch: 18 },
     { wch: 20 },
-    { wch: 25 },
   ];
 
-  // Apply bold formatting to headers
-  const headers = Object.keys(allData[0]);
-  headers.forEach((_, index) => {
-    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: index });
-    worksheet[cellAddress] = {
-      ...worksheet[cellAddress],
-      font: { bold: true },
-    };
+  // Apply styling to squad name rows (bold + centered)
+  merges.forEach((merge) => {
+    const cellAddress = XLSX.utils.encode_cell({ r: merge.s.r, c: 0 });
+    if (worksheet[cellAddress]) {
+      worksheet[cellAddress].s = {
+        font: { bold: true, sz: 14 },
+        alignment: { horizontal: "center", vertical: "center" },
+      };
+    }
   });
 
   XLSX.utils.book_append_sheet(workbook, worksheet, "Tutti Giocatori");
